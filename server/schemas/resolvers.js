@@ -4,7 +4,7 @@ const { AuthenticationError } = require("apollo-server-express");
 
 const resolvers = {
   Query: {
-    getSingleUser: async (root, args, context) => {
+    me: async (root, args, context) => {
       if (context.user) {
         const user = await User.findOne({ _id: context.user.id });
         return user;
@@ -13,7 +13,7 @@ const resolvers = {
     },
   },
   Mutation: {
-    createUser: async (root, args) => {
+    addUser: async (root, args) => {
       const newUser = await User.create(args);
       const token = signToken(newUser);
       return { token, newUser };
@@ -46,7 +46,7 @@ const resolvers = {
       }
       throw new AuthenticationError("Please log in!");
     },
-    deleteBook: async (parent, { bookId }, context) => {
+    removeBook: async (parent, { bookId }, context) => {
       if (context.user) {
         const updateUser = await User.findOneAndUpdate(
           { _id: context.user._id },
@@ -59,3 +59,5 @@ const resolvers = {
     },
   },
 };
+
+module.exports = resolvers;
