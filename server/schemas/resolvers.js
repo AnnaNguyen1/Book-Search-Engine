@@ -6,7 +6,7 @@ const resolvers = {
   Query: {
     me: async (root, args, context) => {
       if (context.user) {
-        const user = await User.findOne({ _id: context.user.id });
+        const user = await User.findOne({ _id: context.user._id });
         return user;
       }
       throw new AuthenticationError("Please log in!");
